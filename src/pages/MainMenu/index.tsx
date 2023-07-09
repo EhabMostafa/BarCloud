@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { FlatList, Text, View } from 'react-native';
 
 import styles from './styles';
@@ -9,6 +9,7 @@ import { MainMenuItem } from '../../components/MainMenuItem';
 import { Box } from '../../icons/svgs/Box';
 import { Vendor } from '../../icons/svgs/Vendor';
 import NavigationService from '../../navigation/NavigationService';
+import { initDataBaseTables } from '../../sql/config';
 
 
 
@@ -42,6 +43,11 @@ function MainMenu() {
                 title: "Person",
             }
         ])
+
+
+    useEffect(() => {
+        initDataBaseTables()
+    }, [])
 
     return (
         <View style={styles.container}>

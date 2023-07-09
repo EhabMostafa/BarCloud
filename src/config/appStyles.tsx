@@ -22,6 +22,10 @@ export const colors = {
     background: "#F4F4F4",
     headerBackground: "#DEDEDE",
     text: "#4E4E4E",
-    mainMenuItemBackground: "#EAEAEA"
+    mainMenuItemBackground: "#EAEAEA",
+    white: "#fff",
+    modalItemBackground: "#fff",
+    searchBack: "#F0F0F0",
+    placeHolder: "#B4B4B4"
 
 }
