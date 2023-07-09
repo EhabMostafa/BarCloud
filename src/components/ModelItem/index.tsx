@@ -1,5 +1,5 @@
 import React, { FunctionComponent, ReactElement } from 'react';
-import { Image, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { Image, Text, TouchableOpacity, View, ViewStyle, ImageStyle } from 'react-native';
 import NavigationService from '../../navigation/NavigationService';
 import { styles } from './styles';
 import { calcWidth } from '../../config/metrics';
@@ -9,17 +9,22 @@ import { images } from '../../sql/images';
 
 type ModelItemProps = {
   icon: string,
-  title: string,
+  title?: string,
   onPress?: Function,
-  style?: ViewStyle
+  style?: ViewStyle,
+  imageContainerStyle?: ViewStyle,
+  imageStyle?: ImageStyle
 }
 
 const ModelItem: FunctionComponent<ModelItemProps> = ({
   icon,
   title,
   onPress,
-  style
+  style,
+  imageContainerStyle,
+  imageStyle
 }) => {
+
 
 
   return (
@@ -34,10 +39,10 @@ const ModelItem: FunctionComponent<ModelItemProps> = ({
 
 
       {/***** Image Container ******/}
-      <View style={styles.imageContainer}>
+      <View style={[styles.imageContainer, imageContainerStyle]}>
         {<Image
           source={images[icon]}
-          style={styles.image}
+          style={[styles.image, imageStyle]}
           resizeMode='contain'
           resizeMethod='resize'
         />

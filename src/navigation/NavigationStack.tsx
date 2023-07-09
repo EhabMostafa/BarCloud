@@ -2,9 +2,7 @@
 
 import * as React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { MainMenu, Model } from '../pages';
-
-// import { MyTabs } from './MyTabs';
+import { MainMenu, Model, ModelDetails } from '../pages';
 
 
 
@@ -19,6 +17,7 @@ export default function NavigationStack() {
     >
       <Stack.Screen name="MainMenu" component={MainMenu} />
       <Stack.Screen name="Model" component={Model} />
+      <Stack.Screen name="ModelDetails" component={ModelDetails} />
 
     </Stack.Navigator >
   );

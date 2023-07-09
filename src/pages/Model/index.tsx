@@ -10,6 +10,7 @@ import { calcHeight, calcWidth } from '../../config/metrics';
 import { getDBConnection, getModels } from '../../sql/config';
 import { FormInput } from '../../components/FormInput';
 import { BarCode } from '../../icons/svgs/BarCode';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 
 
@@ -42,48 +43,55 @@ function Model() {
                 back={true}
             />
 
-            {/****** Search Input ********/}
-            <FormInput
-                value={searchTxt}
-                onChangeText={((value) => {
-                    setSearchTxt(value)
-                    getStoredModels(value)
-                })}
-                placeholder='Type to Search…'
-                style={{ marginTop: calcHeight(20) }}
-                justRightIcon={<BarCode />}
+            <KeyboardAwareScrollView
+                style={styles.scroll}
+                contentContainerStyle={styles.scrollContainer}
+                keyboardShouldPersistTaps="handled"
+                showsVerticalScrollIndicator={false}
+            >
 
-            />
+                {/****** Search Input ********/}
+                <FormInput
+                    value={searchTxt}
+                    onChangeText={((value) => {
+                        setSearchTxt(value)
+                        getStoredModels(value)
+                    })}
+                    placeholder='Type to Search…'
+                    style={{ width: "90%", marginTop: calcHeight(20) }}
+                    justRightIcon={<BarCode />}
 
-            {/****** Model List ********/}
-            <FlatList
-                data={data}
-                style={styles.list}
-                contentContainerStyle={styles.listContent}
-                numColumns={2}
-                ItemSeparatorComponent={
-                    () => <View style={styles.listSeparatorContainer} >
-                        <View style={styles.listSeparator} />
-                    </View>
+                />
 
-                }
-                renderItem={(({ item, index }) => {
-                    return (
-                        <ModelItem
-                            title={item.Name}
-                            icon={item.Img_Link}
-                            onPress={() => {
+                {/****** Model List ********/}
+                <FlatList
+                    data={data}
+                    style={styles.list}
+                    contentContainerStyle={styles.listContent}
+                    numColumns={2}
+                    ItemSeparatorComponent={
+                        () => <View style={styles.listSeparatorContainer} >
+                            <View style={styles.listSeparator} />
+                        </View>
 
-                            }}
-                            style={index % 2 == 1 ? { marginLeft: calcWidth(19) } : {}}
+                    }
+                    renderItem={(({ item, index }) => {
+                        return (
+                            <ModelItem
+                                title={item.Name}
+                                icon={item.Img_Link}
+                                onPress={() => {
+                                    NavigationService.navigate("ModelDetails", { item })
+                                }}
+                                style={index % 2 == 1 ? { marginLeft: calcWidth(19) } : {}}
 
-                        />
-                    )
-                })}
+                            />
+                        )
+                    })}
 
-            />
+                />
 
-
+            </KeyboardAwareScrollView >
 
         </View >
     );

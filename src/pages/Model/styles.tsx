@@ -33,7 +33,14 @@ const styles = StyleSheet.create({
         height: calcHeight(1.5),
         backgroundColor: "#DEDEDE",
         width: calcWidth(325)
-    }
+    },
+    scroll: {
+        width: "100%"
+    },
+    scrollContainer: {
+        paddingBottom: calcHeight(20),
+        alignItems: "center"
+    },
 
 });
 
