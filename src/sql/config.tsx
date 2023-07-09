@@ -54,6 +54,39 @@ export const insertNewModel = async (
 
 }
 
+export const insertNewNote = async (
+    db: SQLiteDatabase,
+    userName: string,
+    note: string,
+    date: Date,
+    modelID: number,
+) => {
+
+    let query = `INSERT INTO Notes (UserName, Details, Date, ModelID)
+    VALUES ('${userName}','${note}', '${date}', '${modelID}');`
+
+    console.log("Ehab test insert query : ", query)
+    return db.executeSql(query);
+
+}
+
+export const getNotesByModelID = async (db: SQLiteDatabase, id?: number): Promise<any> => {
+    try {
+        const models: any = [];
+        let query = `select * from Notes where ModelID=${id} ORDER BY Date DESC`
+        const results = await db.executeSql(query);
+        results.forEach(result => {
+            for (let index = 0; index < result.rows.length; index++) {
+                models.push(result.rows.item(index))
+            }
+        });
+        return models;
+    } catch (error) {
+        console.error(error);
+        throw Error('Failed to get models !!!');
+    }
+};
+
 
 export const initDataBaseTables = async () => {
     //Create Models Table
@@ -82,7 +115,8 @@ export const initDataBaseTables = async () => {
         UserName varchar(255),
         Date  DATETIME,
         Details varchar(255),
-        ModelID INTEGER FOREIGN KEY REFERENCES Models(ID)
+        ModelID INTEGER ,
+        FOREIGN KEY (ModelID) REFERENCES Models(ID)
         `
     )
 

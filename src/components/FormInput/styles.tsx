@@ -6,7 +6,7 @@ import { calcHeight, calcWidth, calcWidthRatio } from '../../config/metrics';
 const styles = StyleSheet.create({
     container: {
         alignItems: "center",
-        width: "90%",
+        width: "100%",
 
     },
     title: {

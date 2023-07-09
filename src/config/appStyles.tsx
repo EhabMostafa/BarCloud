@@ -26,6 +26,9 @@ export const colors = {
     white: "#fff",
     modalItemBackground: "#fff",
     searchBack: "#F0F0F0",
-    placeHolder: "#B4B4B4"
+    placeHolder: "#B4B4B4",
+    border: "#707070",
+    lightBorder: "#DEDEDE",
+    modelDetailsContainerBackground: "#EAEAEA",
 
 }
