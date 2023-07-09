@@ -1,42 +1,70 @@
-import SQLite from "react-native-sqlite-storage"
+import { SQLiteDatabase, enablePromise, openDatabase } from 'react-native-sqlite-storage';
 
-const errorCB = (err: any) => {
-    console.log("SQL Error: " + err);
-}
+enablePromise(true);
 
-const successCB = (err: any) => {
-    console.log("SQL executed fine");
-}
+export const getDBConnection = async () => {
+    return openDatabase({ name: 'BarCloud.db', location: 'default' });
+};
 
 
-const openCB = () => {
-    console.log("Database OPENED");
-}
-
-
-const db = SQLite.openDatabase({ name: "BarCloud.db" }, openCB, errorCB);
-
-const createTable = (tableName: string, tableData: string) => {
+export const createTable = async (db: SQLiteDatabase, tableName: string, tableData: string) => {
 
     let query = `CREATE TABLE IF NOT EXISTS ${tableName} (${tableData});`
 
-    console.log("Ehab test : ", query)
-    db.transaction((tx) => {
-        tx.executeSql(query, [], (tx, results) => {
-            console.log("\n results: ", results)
-        })
-    })
-
+    console.log("Ehab test create table : ", query)
+    await db.executeSql(query);
 
 }
 
-export const initDataBaseTables = () => {
-    //Create Models Table
 
-    createTable(
+export const getModels = async (db: SQLiteDatabase, name?: string): Promise<any> => {
+    try {
+        const models: any = [];
+        let query = `select * from Models ${name ? `where Name LIKE '%${name}%'` : ``}`
+        const results = await db.executeSql(query);
+        results.forEach(result => {
+            for (let index = 0; index < result.rows.length; index++) {
+                models.push(result.rows.item(index))
+            }
+        });
+        return models;
+    } catch (error) {
+        console.error(error);
+        throw Error('Failed to get models !!!');
+    }
+};
+
+
+export const insertNewModel = async (
+    db: SQLiteDatabase,
+    name: string,
+    code: string,
+    type: string,
+    cost: number,
+    category: string,
+    desc: string,
+    img: string
+) => {
+
+    let query = `INSERT INTO Models (Name, Code, Type, Cost, Category, Add_Description, Img_Link)
+    VALUES ('${name}','${code}', '${type}', '${cost}', '${category}', '${desc}', '${img}');`
+
+    console.log("Ehab test insert query : ", query)
+    return db.executeSql(query);
+
+}
+
+
+export const initDataBaseTables = async () => {
+    //Create Models Table
+    const db = await getDBConnection();
+
+    const x = await createTable(
+        db,
         "Models",
         `
         ID INTEGER PRIMARY KEY AUTOINCREMENT,
+        Name varchar(255),
         Code varchar(255),
         Type  varchar(255),
         Cost DECIMAL(10,2),
@@ -47,6 +75,7 @@ export const initDataBaseTables = () => {
     )
 
     createTable(
+        db,
         "Notes",
         `
         ID INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -56,6 +85,29 @@ export const initDataBaseTables = () => {
         ModelID INTEGER FOREIGN KEY REFERENCES Models(ID)
         `
     )
+
+    const storedModels = await getModels(db);
+
+    if (storedModels.length == 0) {
+        await initModelData(db)
+    }
+
+
+
+
+
+}
+
+
+const initModelData = async (db: SQLiteDatabase) => {
+    //Create Models Data
+
+    await insertNewModel(db, "Printer HS", "GT2000", "EPSON", 125.50, "Printers", "Black", "Printer HS")
+    await insertNewModel(db, "LCD XS", "HT1000", "Asus", 225.50, "Monitors", "IPS", "LCD XS")
+    await insertNewModel(db, "Laptops", "Corei9", "Dell", 1025.50, "PCS", "144HZ", "Laptops")
+    await insertNewModel(db, "Printer Inc", "GT2000", "GT2000", 0, "", "", "Printer Inc")
+
+
 
 
 }

@@ -20,6 +20,11 @@ const MainMenuItem: FunctionComponent<MainMenuItemProps> = ({
   return (
     <TouchableOpacity style={[styles.container]}
       disabled={!onPress}
+      onPress={() => {
+        if (onPress) {
+          onPress()
+        }
+      }}
     >
 
 

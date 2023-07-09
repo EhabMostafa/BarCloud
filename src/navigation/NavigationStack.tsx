@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { MainMenu } from '../pages';
+import { MainMenu, Model } from '../pages';
 
 // import { MyTabs } from './MyTabs';
 
@@ -18,6 +18,7 @@ export default function NavigationStack() {
       screenOptions={{ headerShown: false, gestureEnabled: true }}
     >
       <Stack.Screen name="MainMenu" component={MainMenu} />
+      <Stack.Screen name="Model" component={Model} />
 
     </Stack.Navigator >
   );
